@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Future Leadership Program</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container" id="appContainer">
+    <!-- Facilitator Header & Control Bar -->
+    <header class="header-bar" role="banner">
+      <div class="header-top-row">
+        <div class="brand-section">
+          <h1 class="brand-title">Future Leadership Program</h1>
+        </div>
+
+        <!-- Live Counters -->
+        <div class="stats-group" aria-label="Session status statistics">
+          <div class="stat-pill">
+            <span class="stat-label">Regular cards</span>
+            <span class="stat-value highlight" id="regularCount">45 / 45 Left</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-label">Special pool</span>
+            <span class="stat-value" id="specialCount">8 / 8 Left</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="header-actions">
+          <button type="button" class="btn btn-tower-falls" id="btnTowerFalls" aria-label="Trigger Special Question because the physical tower collapsed">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="15.5" width="13" height="3.6" rx="0.8"></rect>
+              <rect x="6.5" y="10.5" width="11" height="3.6" rx="0.8"></rect>
+              <rect x="13" y="2.2" width="9" height="3.6" rx="0.8" transform="rotate(26 17.5 4)"></rect>
+            </svg>
+            <span>Tower Falls!</span>
+          </button>
+
+          <button type="button" class="btn btn-utility" id="btnUndo" disabled aria-label="Undo last picked card or special question">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 14L4 9l5-5"></path>
+              <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"></path>
+            </svg>
+            <span>Undo</span>
+          </button>
+
+          <button type="button" class="btn btn-utility" id="btnSoundToggle" aria-label="Toggle sound effects">
+            <svg id="soundIconOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <svg id="soundIconOff" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+            <span id="soundBtnText">Sound On</span>
+          </button>
+
+          <button type="button" class="btn btn-reset" id="btnReset" aria-label="Reset entire game session">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            <span>Reset</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- S1-S8 Special Pool Chips Row -->
+      <div class="special-chips-bar" aria-label="Special question tracker">
+        <span class="special-chips-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Special pool (S1–S8):
+        </span>
+        <div class="special-chips-list" id="specialChipsList">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </div>
+
+      <!-- Session Progress Bar -->
+      <div class="session-progress" aria-label="Session progress">
+        <div class="session-progress-head">
+          <span class="session-progress-label">Session progress</span>
+          <span class="session-progress-text" id="progressText">0 of 45 blocks opened</span>
+        </div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="45" aria-valuenow="0" id="progressTrack">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content: 45 Blocks Grid -->
+    <main role="main">
+      <div class="grid-section-header">
+        <h2 class="section-label">Block question deck (1–45)</h2>
+        <div class="legend" aria-hidden="true">
+          <div class="legend-item">
+            <span class="legend-dot available"></span>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot opened"></span>
+            <span>Opened</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Grid Container -->
+      <div class="cards-grid" id="cardsGrid" role="region" aria-label="Numbered Stacko question blocks">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Session Recap -->
+      <section class="recap-section" aria-label="Session recap">
+        <div class="recap-header">
+          <h2 class="section-label">Session recap</h2>
+          <span class="recap-count" id="recapCount">0 questions drawn</span>
+        </div>
+        <p class="recap-empty" id="recapEmpty">No questions drawn yet. Click a block number to start the session.</p>
+        <ol class="recap-list" id="recapList">
+          <!-- Rendered dynamically by app.js -->
+        </ol>
+      </section>
+    </main>
+
+    <!-- Footer Note -->
+    <footer class="footer-info">
+      <p>Future Leadership Program Facilitator Tool for Physical Stacko Game. Auto-saved in browser local storage.</p>
+    </footer>
+  </div>
+
+  <!-- Question Reveal Modal -->
+  <div class="modal-scrim" id="questionModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="cardBadge" aria-describedby="questionText">
+    <div class="modal-dialog" id="modalDialog">
+      <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Close question dialog">
+        &times;
+      </button>
+
+      <!-- Optional 60s Answer Timer Toolbar -->
+      <div class="timer-toolbar" id="timerToolbar" role="region" aria-label="Optional answer timer">
+        <div class="timer-readout-group">
+          <svg class="timer-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span class="timer-digits" id="timerDigits">01:00</span>
+        </div>
+        <div class="timer-controls">
+          <button type="button" class="timer-btn" id="btnTimerToggle">Start 60s Timer</button>
+          <button type="button" class="timer-btn" id="btnTimerAdd">+15s</button>
+          <button type="button" class="timer-btn" id="btnTimerReset">Reset</button>
+        </div>
+      </div>
+
+      <!-- 3D Perspective Card Viewport -->
+      <div class="flip-card-viewport">
+        <div class="flip-card-inner" id="flipCardInner">
+          <!-- Front Side: Block Number -->
+          <div class="flip-card-face flip-card-front">
+            <div class="front-title" id="flipFrontTitle">Block number</div>
+            <div class="front-number" id="flipFrontNumber">1</div>
+            <div class="front-hint" id="flipFrontHint">Stacko block</div>
+          </div>
+
+          <!-- Back Side: Revealed Question -->
+          <div class="flip-card-face flip-card-back">
+            <span class="card-badge" id="cardBadge">Question #1</span>
+            <p class="question-text" id="questionText">Question content here</p>
+            <div class="special-audience-note" id="audienceNote" style="display: none;">
+              Everyone in the room answers this question!
+            </div>
+            <img class="mascot-img mascot-pos-br" id="mascotImg" src="" alt="" aria-hidden="true">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="modalDoneBtn">
+          Done &amp; Return to Grid
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Dialog (Reset / Exhausted Pool) -->
+  <div class="modal-scrim" id="confirmModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="confirmTitle" aria-describedby="confirmMsg">
+    <div class="dialog-box">
+      <h3 class="dialog-title" id="confirmTitle">Confirm Action</h3>
+      <p class="dialog-message" id="confirmMsg">Are you sure you want to proceed?</p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-secondary" id="confirmCancelBtn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmActionBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="toastNotice" role="status" aria-live="polite">
+    <span id="toastMessage">Action performed</span>
+  </div>
+
+  <!-- Load Data and Scripts -->
+  <script src="questions.js"></script>
+  <script src="mascots.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
